@@ -16,6 +16,8 @@ from sklearn.metrics import accuracy_score
 import numpy as np
 import random
 
+import pdb
+
 
 def load_sentiment_sentences_and_labels():
     """
@@ -76,26 +78,28 @@ print("load data..")
 data = load_sentiment_sentences_and_labels()
 X_train, y_train, X_dev, y_dev, X_test, y_test = split_and_vectorize(data)
 
+print("label distribution: "  + ", ".join(["%d=%d" % (k,(y_train==k).sum()) for k in np.unique(y_train)]))
+
 
 ### Q2: Train and evaluate the classifier on the dev set -- your code here
-clf = None # init the classifier
+clf = LogisticRegression(C=1.0) # init the classifier
 
 print("train model..")
+clf.fit(X_train,y_train)
 print(clf) # shows which model and its parameters
 
 
-y_predicted_dev = None
+y_predicted_dev = clf.predict(X_dev)
 
 
-exit() # remove this line
+#exit() # remove this line
 ## end your code here for Q2
 
 ## Q3: Add a simple baseline -- your code here
-
-baseline_dev = None
+most_freq_clss = Counter(y_train).most_common(1)[0][0]
+baseline_dev = most_freq_clss*np.ones(len(y_dev))
 
 ## end your code here for Q3
-
 
 
 ### evaluate
